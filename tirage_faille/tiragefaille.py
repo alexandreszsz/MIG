@@ -15,13 +15,10 @@ Volume = X*Y*Z #Calcul du volume occupé
 # 2.Tirage au sort du nombre de failles
 # ---------------------------------------------------------------------
 
-'''Rappelons-nous tout d'abord de la loi de Gutenberg-Richter, on a une décroissance
-exponentielle du nombre de faille en fonction de leur taille. Ici, l'espace
-considéré étant un cube de largeur 100m avec une discrétisation de 1mm
-contentons-nous de failles d'une largeur entre 1m et 1 cm.
-La loi de Gutenberg-Richter selon la taille de la faille donne
- alors que on a une répartition en une puissance de 1/L. 
- (Voir les Notes à ce propos dans le dossier création de faille.)'''
+"""Ici on s'appuie sur la loi de Gutenberg-Richter qui donne la proportion
+de séismes selon leur magnitude, et sur la loi liant magnitude d'un séisme
+et longueur de la faille qui a cédé, pour en déduire la nombre(et donc la 
+proportion de faille) selon leur longueur. """
 
 alpha = 1.35 #paramètre d'évolution caractéristique de la loi de Gutenberg-Richter.
 N0 =100 #paramètre caractéristique de la sismicité 
@@ -62,20 +59,14 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import Normalize
 
-# ---------------------------------------------------------------
-# 1. Chargement des données
-# Format attendu de faults : liste de dicts (ou array N x 7)
-# faults = [ {'L': ..., 'pos': (x,y,z), 'n': (nx,ny,nz)}, ... ]
-# Si tu as un fichier : np.loadtxt('faults.txt') avec colonnes
-# L, px, py, pz, nx, ny, nz :
-"""faults_data = np.loadtxt('faults.txt')   # <-- adapter le chemin
-faults = [
-    {'L': row[0], 'pos': row[1:4], 'n': row[4:7]}
-    for row in faults_data
-]"""
-
+# ---------------------------------------------------------------------
+# 4.plot des failles
+# ---------------------------------------------------------------------
 
 faults = np.array(L_faille)
+
+# ---------------------------------------------------------------
+# 1.fonctions
 def orthonormal_basis(n):
     """Renvoie (u, v) orthonormaux et orthogonaux à n."""
     n = n / np.linalg.norm(n)
@@ -142,7 +133,7 @@ ax.set_ylim(pts[:,1].min(), pts[:,1].max())
 ax.set_zlim(pts[:,2].min(), pts[:,2].max())
 
 ax.set_xlabel('x'); ax.set_ylabel('y'); ax.set_zlabel('z')
-ax.set_box_aspect((1, 1, 1))   # échelle isotrope (indispensable, sinon distances faussées)
+ax.set_box_aspect((1, 1, 1))   # échelle isotrope 
 plt.tight_layout()
 plt.show()
 
